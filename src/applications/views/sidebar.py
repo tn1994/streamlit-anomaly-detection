@@ -3,7 +3,10 @@ import logging
 import streamlit as st
 
 from .base_view import spinner_wrapper
-from ..views.anomaly_detection_view import AnomalyDetectionView
+from .anomaly_detection_view import AnomalyDetectionView
+from .isolation_forest_view import IsolationForestView
+from .random_cut_forest_view import RandomCutForestView
+
 from ..services.version_service import VersionService
 
 logger = logging.getLogger(__name__)
@@ -14,6 +17,8 @@ class Sidebar:
     def __init__(self):
         self.service_dict = {
             'anomaly_detection_service': self.anomaly_detection_service,
+            'isolation_forest_view': self.isolation_forest_service,
+            'random_cut_forest_service': self.random_cut_forest_service,
             'version_service': self.version_service,
         }
 
@@ -27,6 +32,16 @@ class Sidebar:
     def anomaly_detection_service():
         anomaly_detection_view = AnomalyDetectionView()
         anomaly_detection_view.main()
+
+    @staticmethod
+    def isolation_forest_service():
+        isolation_forest_view = IsolationForestView()
+        isolation_forest_view.main()
+
+    @staticmethod
+    def random_cut_forest_service():
+        random_cut_forest_view = RandomCutForestView()
+        random_cut_forest_view.main()
 
     @spinner_wrapper
     def version_service(self):
