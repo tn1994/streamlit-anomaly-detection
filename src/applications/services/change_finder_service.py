@@ -2,7 +2,7 @@ import changefinder
 import numpy as np
 
 
-class AnomalyDetectionService:
+class ChangeFinderService:
     """
     ref:
     https://qiita.com/deaikei/items/af728ab0d43ca97bc1f6
