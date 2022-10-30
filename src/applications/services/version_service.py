@@ -1,7 +1,7 @@
-import sys
 import pip
 import json
 import logging
+import platform
 import subprocess
 
 from .utils.re_util import get_only_version
@@ -13,7 +13,7 @@ class VersionService:
 
     @staticmethod
     def get_python_version():
-        return get_only_version(text=sys.version)
+        return platform.python_version()
 
     @staticmethod
     def get_pip_version():
@@ -21,9 +21,15 @@ class VersionService:
 
     @staticmethod
     def get_library_version(library_name: str):
-        list_files = subprocess.run(
-            ['pip3', 'show', library_name], capture_output=True)
-        version = get_only_version(text=list_files.stdout.decode())
+        cmd = f'pip3 freeze | grep {library_name}'
+        ps = subprocess.Popen(
+            cmd,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT)
+        output = ps.communicate()[0]
+        version = get_only_version(text=output.decode())
+
         if version is None:
             return '-'
         return version
